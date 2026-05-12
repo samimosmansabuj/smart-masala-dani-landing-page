@@ -1,0 +1,615 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+  }
+  
+  body{
+    font-family:'Hind Siliguri', sans-serif;
+    background:#F7F1EB;
+    color:#2B1D16;
+    overflow-x:hidden;
+  }
+  
+  /* =========================
+     🔥 BANGLA NUMBER FIX
+  ========================= */
+  select,
+    option {
+    font-family: 'Hind Siliguri', sans-serif;
+    font-size: 16px;
+    font-variant-numeric: tabular-nums;
+    padding: 10px;
+    }
+  
+  /* make all numbers equal width */
+  body, input, textarea, select, button, .total, .price-box, .review-card, .feature-card, .pricing-box {
+    font-variant-numeric: lining-nums;
+    font-feature-settings: "tnum";
+  }
+  
+  /* fix Bengali “১” uneven size issue */
+  * {
+    font-feature-settings: "pnum";
+  }
+  
+  /* extra fix for summary + price */
+  .total, .pricing-box, .price-box, .summary-row {
+    font-variant-numeric: tabular-nums;
+  }
+  
+  /* =========================
+     GLOBAL
+  ========================= */
+  
+  img{
+    width:100%;
+    display:block;
+  }
+  
+  a{
+    text-decoration:none;
+  }
+  
+  .container{
+    width:90%;
+    max-width:1200px;
+    margin:auto;
+  }
+  
+  .topbar{
+    background:#2B1D16;
+    color:white;
+    padding:10px;
+    text-align:center;
+    font-size:14px;
+    position:sticky;
+    top:0;
+    z-index:999;
+  }
+  
+  /* =========================
+     HERO FIX (MOBILE ORDER + IMAGE SIZE)
+  ========================= */
+  
+  .hero{
+    padding:60px 0;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+  }
+  
+  .hero-image{
+    position:relative;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    
+  }
+  
+  .hero-image img{
+    border-radius:24px;
+    box-shadow:0 20px 40px rgba(0,0,0,.15);
+    width:100%;
+    max-height:520px;
+    object-fit:cover;
+  }
+  
+  /* 🔥 MOBILE: image BELOW text */
+  @media(max-width:768px){
+
+    .hero{
+      grid-template-columns:1fr;
+    }
+  
+    /* text first, image second control */
+    .hero > div:first-child{
+      order:2;
+    }
+  
+    .hero-image{
+      order:1;
+    }
+  
+    .hero-image img{
+      max-height:320px;
+    }
+  }
+  
+  /* =========================
+     TYPOGRAPHY
+  ========================= */
+  
+  .badge{
+    display:inline-block;
+    background:#D9A441;
+    color:white;
+    padding:8px 16px;
+    border-radius:30px;
+    margin-bottom:20px;
+    font-weight:600;
+  }
+  
+  .hero h1{
+    font-size:48px;
+    line-height:1.3;
+    margin-bottom:20px;
+  }
+  
+  .hero p{
+    font-size:18px;
+    margin-bottom:25px;
+    color:#5B4B43;
+  }
+  
+  .price-box{
+    margin-bottom:25px;
+  }
+  
+  .old-price{
+    text-decoration:line-through;
+    color:#777;
+    font-size:22px;
+  }
+  
+  .new-price{
+    font-size:42px;
+    color:#7A5230;
+    font-weight:700;
+  }
+  
+  .cta-group{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+  }
+  
+  .btn{
+    padding:15px 28px;
+    border-radius:12px;
+    font-weight:600;
+    transition:.3s;
+    cursor:pointer;
+    border:none;
+    font-size:16px;
+  }
+  
+  .btn-primary{
+    background:#7A5230;
+    color:white;
+  }
+  
+  .btn-primary:hover{
+    background:#5e3e24;
+  }
+  
+  .btn-secondary{
+    background:white;
+    border:2px solid #7A5230;
+    color:#7A5230;
+  }
+  
+  .countdown{
+    margin-top:25px;
+    background:white;
+    padding:15px;
+    border-radius:14px;
+    box-shadow:0 5px 20px rgba(0,0,0,.08);
+    display:inline-block;
+  }
+  
+  /* =========================
+     SECTION TITLE
+  ========================= */
+  
+  .section-title{
+    text-align:center;
+    margin-bottom:50px;
+  }
+  
+  .section-title h2{
+    font-size:38px;
+    margin-bottom:15px;
+  }
+  
+  /* =========================
+     FEATURES
+  ========================= */
+  
+  .features{
+    padding:80px 0;
+    background:white;
+  }
+  
+  .feature-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:25px;
+  }
+  
+  .feature-card{
+    background:#F7F1EB;
+    padding:30px;
+    border-radius:20px;
+    text-align:center;
+  }
+  
+  /* =========================
+     GALLERY FIX (IMPORTANT)
+  ========================= */
+  
+  .gallery{
+    padding:80px 0;
+  }
+  
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 10px;
+    align-items: center;
+}
+  
+  /* perfect image fit */
+  .gallery-grid img {
+    width: 100%;
+    height: 300px;
+    object-fit: contain;
+    object-position: center;
+    background: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.gallery-grid:has(img:only-child) {
+    display: flex;
+    justify-content: center;
+}
+
+.gallery-grid.single-image {
+    display: flex;
+    justify-content: center;
+}
+  
+  /* hover */
+  .gallery-grid img:hover{
+    transform:scale(1.03);
+  }
+  
+  /* 📱 MOBILE FIX */
+  @media(max-width:768px){
+    .gallery-grid{
+      grid-template-columns:repeat(2,1fr);
+    }
+  
+    .gallery-grid img{
+      height:180px;
+    }
+  }
+  
+  /* =========================
+     VIDEO
+  ========================= */
+  
+  .video-section{
+    padding:80px 0;
+    background:#2B1D16;
+    color:white;
+    text-align:center;
+  }
+  
+  .video-wrapper{
+    margin-top:40px;
+    border-radius:20px;
+    overflow:hidden;
+  }
+  
+  iframe{
+    width:100%;
+    height:500px;
+    border:none;
+  }
+  
+  /* =========================
+     BEFORE AFTER
+  ========================= */
+  
+  .before-after{
+    padding:80px 0;
+  }
+  
+  .ba-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:30px;
+  }
+  
+  .ba-card{
+    padding:35px;
+    border-radius:20px;
+    background:white;
+  }
+  
+  /* =========================
+     REVIEWS
+  ========================= */
+  
+  .reviews{
+    padding:80px 0;
+    background:white;
+  }
+  
+  .review-slider{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:25px;
+  }
+  
+  .review-card{
+    background:#F7F1EB;
+    padding:25px;
+    border-radius:18px;
+  }
+  
+  /* =========================
+     PRICING
+  ========================= */
+  
+  .pricing{
+    padding:80px 0;
+    text-align:center;
+  }
+  
+  .pricing-box{
+    background:white;
+    padding:50px;
+    border-radius:30px;
+    max-width:700px;
+    margin:auto;
+    box-shadow:0 10px 40px rgba(0,0,0,.08);
+  }
+  
+  /* 🔥 SUMMARY FIX (SMALL + BOLD) */
+  .summary-row,
+  .total,
+  .pricing-box{
+    font-size:18px;
+    font-weight:700;
+  }
+  
+  /* =========================
+     FAQ
+  ========================= */
+  
+  .faq{
+    padding:80px 0;
+    background:white;
+  }
+  
+  .faq-item{
+    margin-bottom:20px;
+    border-radius:14px;
+    overflow:hidden;
+    background:#F7F1EB;
+  }
+  
+  .faq-question{
+    padding:20px;
+    cursor:pointer;
+    font-weight:600;
+  }
+  
+  .faq-answer{
+    padding:0 20px 20px;
+    display:none;
+  }
+  
+  /* =========================
+     ORDER
+  ========================= */
+  
+  .order{
+    padding:80px 0;
+  }
+  
+  .order-form{
+    background:white;
+    padding:40px;
+    border-radius:25px;
+    max-width:700px;
+    margin:auto;
+  }
+  
+  .input-group{
+    margin-bottom:20px;
+  }
+  
+  input, textarea, select{
+    width:100%;
+    padding:15px;
+    border-radius:12px;
+    border:1px solid #ddd;
+    font-family:inherit;
+  }
+  
+  /* =========================
+     SUMMARY
+  ========================= */
+  
+  .product-summary{
+    background:#fff;
+    border-radius:18px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+    margin:20px 0;
+    border:1px solid #f1e6dc;
+  }
+  
+  /* header */
+  .summary-header{
+    font-size:18px;
+    font-weight:800;
+    color:#2B1D16;
+    margin-bottom:15px;
+    padding-bottom:10px;
+    border-bottom:1px solid #eee;
+  }
+  
+  /* rows */
+  .summary-body{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  
+  .summary-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:15px;
+    font-weight:600;
+    color:#5B4B43;
+  }
+  
+  /* values bold */
+  .summary-row span:last-child{
+    font-weight:800;
+    color:#2B1D16;
+  }
+  
+  /* total highlight */
+  .summary-row.total{
+    margin-top:10px;
+    padding-top:10px;
+    border-top:1px dashed #ddd;
+    font-size:18px;
+  }
+  
+  .summary-row.total span{
+    font-weight:900;
+    color:#7A5230;
+  }
+  /* =========================
+     STICKY
+  ========================= */
+  
+  .sticky-buy{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    background:#7A5230;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    z-index:999;
+  }
+  
+  .sticky-buy h3{
+    color:white;
+    font-size:20px;
+  }
+  
+  .sticky-buy button{
+    background:#D9A441;
+    color:white;
+    border:none;
+    padding:14px 24px;
+    border-radius:12px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  
+  /* =========================
+     POPUP
+  ========================= */
+  
+  .popup{
+    position:fixed;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.7);
+    top:0;
+    left:0;
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
+  }
+  
+  .popup-box{
+    background:white;
+    padding:40px;
+    border-radius:25px;
+    text-align:center;
+    max-width:400px;
+  }
+  
+  .popup-box h2{
+    margin-bottom:15px;
+  }
+  
+  /* =========================
+     FOOTER
+  ========================= */
+  
+  footer{
+    background:#2B1D16;
+    color:white;
+    text-align:center;
+    padding:30px;
+    margin-top:80px;
+  }
+  
+  /* =========================
+     RESPONSIVE
+  ========================= */
+  
+  @media(max-width:768px){
+  
+    .hero h1{
+      font-size:34px;
+    }
+  
+    .ba-grid{
+      grid-template-columns:1fr;
+    }
+  
+    iframe{
+      height:250px;
+    }
+  
+    .sticky-buy h3{
+      font-size:16px;
+    }
+  }
+
+  .success-popup{
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+  
+  .success-box{
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+  }
+
+  #heroImage {
+    width: 100%;
+    height: 400px; /* তুমি চাইলে adjust করতে পারো */
+    object-fit: contain;
+    object-position: center;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+}
