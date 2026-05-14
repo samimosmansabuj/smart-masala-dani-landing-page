@@ -1,7 +1,6 @@
 // ==================================================================================================
 // *********//////////====Facebook Pixel and Event Tracking Function=====/////////////***************
 
-// View Content Event Tracking Function ========== 
 function FacebookViewContentEvent(productName, productPrice, productIds) {
     if (typeof fbq !== 'function') return;
     fbq('track', 'ViewContent', {

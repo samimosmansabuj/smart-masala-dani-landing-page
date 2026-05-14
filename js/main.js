@@ -44,7 +44,28 @@ function isValidBDPhoneNew(phone) {
 // =========================
 // Product Fetch
 // =========================
+function showProductError() {
+    if (document.getElementById("productError")) return;
+    document.body.innerHTML = "";
+    const div = document.createElement("div");
+    div.id = "productError";
+    div.className = "product-error";
+
+    div.innerHTML = `
+        <div class="error-box">
+            <div class="spinner-ring"></div>
+            <h2>Loading product</h2>
+            <p>We are connecting to server...</p>
+            <div class="sub-text">
+                Retrying automatically...
+            </div>
+        </div>
+    `;
+    document.body.appendChild(div);
+}
+
 (async function () {
+    document.getElementById("main_content").style.display = "none";
     try {
         const response = await fetch(
             `${ENV.API_BASE_URL}/site/api/landing-page/${ENV.PRODUCT_LANDING_PAGE_ID}/`
@@ -52,18 +73,17 @@ function isValidBDPhoneNew(phone) {
         const response_data = await response.json();
 
         if (response_data.status) {
+            document.getElementById("main_content").style.display = "block";
             PRODUCT_DATA = response_data.data.product[0];
-            // console.log("PRODUCT_DATA: ", PRODUCT_DATA)
             setupProductData();
             setupGallery();
             updateSummary();
-            
         } else {
-            console.log("Product fetch error");
+            showProductError();
         }
 
     } catch (e) {
-        console.log("Fetch Error:", e);
+        showProductError();
     }
 })();
 
