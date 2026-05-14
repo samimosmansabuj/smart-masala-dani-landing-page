@@ -3,22 +3,19 @@ let PRODUCT_DATA = null;
 // =========================
 // Frontend Images
 // =========================
-
-const HERO_IMAGE = "images/hero.jfif";
-
+const HERO_IMAGE = "images/Top.webp";
 const GALLERY_IMAGES = [
-    "images/1.jfif",
-    "images/2.jfif",
-    "images/3.jfif",
-    "images/4.jfif",
-    "images/5.jfif",
-    "images/6.jfif"
+    "images/Gallery.webp",
+    "images/Gallery2.webp",
+    "images/Gallery3.webp",
+    "images/Gallery4.webp",
+    "images/Gallery5.webp",
+    "images/Gallery6.webp"
 ];
 
 // =========================
 // Utility Functions
 // =========================
-
 function toBanglaNumber(number) {
     const eng = "0123456789";
     const bang = "০১২৩৪৫৬৭৮৯";
@@ -55,55 +52,44 @@ function isValidBDPhoneNew(phone) {
         const response_data = await response.json();
 
         if (response_data.status) {
-
             PRODUCT_DATA = response_data.data.product[0];
-
+            // console.log("PRODUCT_DATA: ", PRODUCT_DATA)
             setupProductData();
             setupGallery();
             updateSummary();
-
+            
         } else {
-
             console.log("Product fetch error");
-
         }
 
     } catch (e) {
-
         console.log("Fetch Error:", e);
-
     }
 })();
 
 function setupProductData() {
+    FacebookViewContentEvent(PRODUCT_DATA.name, PRODUCT_DATA.discount_price, PRODUCT_DATA.id);
 
-    document.getElementById("productTitle").textContent =
-        PRODUCT_DATA.name;
+    document.getElementById("productTitle").textContent = PRODUCT_DATA.name;
 
     if (PRODUCT_DATA.short_description) {
-
-        document.getElementById("productDescription").innerHTML =
-            PRODUCT_DATA.short_description;
+        document.getElementById("productDescription").innerHTML = PRODUCT_DATA.short_description;
 
     }
 
     // Frontend Hero Image
-    document.getElementById("heroImage").src =
-        HERO_IMAGE;
+    document.getElementById("heroImage").src = HERO_IMAGE;
 
     document.querySelectorAll(".product-old-price")
         .forEach(el => {
-
-            el.textContent =
-                `${toBanglaNumber(Math.floor(PRODUCT_DATA.price))} ৳`;
+            el.textContent = `${toBanglaNumber(Math.floor(PRODUCT_DATA.price))} ৳`;
 
         });
 
     document.querySelectorAll(".product-new-price")
         .forEach(el => {
 
-            el.textContent =
-                `${toBanglaNumber(Math.floor(PRODUCT_DATA.discount_price))} ৳`;
+            el.textContent = `${toBanglaNumber(Math.floor(PRODUCT_DATA.discount_price))} ৳`;
 
         });
 
@@ -144,9 +130,7 @@ function setupGallery() {
 // District Fetch
 // =========================
 
-const districtSelect =
-    document.getElementById("deliverydistrict");
-
+const districtSelect = document.getElementById("deliverydistrict");
 fetch('https://bdapi.vercel.app/api/v.1/district')
     .then(response => response.json())
     .then(data => {
@@ -179,47 +163,30 @@ fetch('https://bdapi.vercel.app/api/v.1/district')
 // =========================
 
 function getProductDeliveryCharge(product, district) {
-
     const dc = product.delivery_charge;
-
     if (!dc) {
-
         return district === "dhaka"
             ? 80
             : 120;
-
     }
-
     if (dc.area_and_charge?.all !== undefined) {
         return dc.area_and_charge.all;
     }
-
     if (dc.all !== undefined) {
         return dc.all;
     }
-
-    const areaSets =
-        ["area-set-1", "area-set-2", "area-set-3"];
-
-    const area_and_charge =
-        dc.area_and_charge;
-
+    const areaSets = ["area-set-1", "area-set-2", "area-set-3"];
+    const area_and_charge = dc.area_and_charge;
     for (const key of areaSets) {
-
         if (!area_and_charge[key]) continue;
-
         const { area, charge } =
             area_and_charge[key];
-
         if (
             area.includes("all") ||
             area.includes(district)
         ) {
-
             return charge;
-
         }
-
     }
 
     return district === "dhaka"
@@ -243,14 +210,10 @@ districtSelect.addEventListener("change", () => {
 });
 
 function updateSummary() {
-
     if (!PRODUCT_DATA) return;
+    const qty = Number(quantity.value);
 
-    const qty =
-        Number(quantity.value);
-
-    const productTotal =
-        qty * PRODUCT_DATA.discount_price;
+    const productTotal = qty * PRODUCT_DATA.discount_price;
 
     const deliveryCharge =
         getProductDeliveryCharge(
@@ -397,9 +360,8 @@ function closePopup() {
 
 document.querySelectorAll(".orderNowBtn")
     .forEach(btn => {
-
         btn.addEventListener("click", () => {
-
+            FacebookAddToCartEvent(PRODUCT_DATA.id, PRODUCT_DATA.name, PRODUCT_DATA.discount_price);
             document.getElementById("orderSection")
                 .scrollIntoView({
                     behavior: "smooth"
@@ -412,20 +374,35 @@ document.querySelectorAll(".orderNowBtn")
 // =========================
 // Order Submit
 // =========================
+function getTotalAmount(){
+    const qty = Number(quantity.value);
+    const deliveryCharge = getProductDeliveryCharge(PRODUCT_DATA, districtSelect.value);
+    const productTotal = qty * PRODUCT_DATA.discount_price;
+    return productTotal + deliveryCharge
+}
+
+function getProductJsonForEventSend(){
+    const qtyInput = Number(quantity.value);
+    const contents = [];
+    contents.push({
+        id: PRODUCT_DATA.id,
+        name: PRODUCT_DATA.name,
+        quantity: qtyInput,
+        price: PRODUCT_DATA.discount_price,
+    });
+    return contents;
+};
 
 document.getElementById("orderForm")
     .addEventListener("submit", async function (e) {
-
         e.preventDefault();
+        FacebookInitiateCheckEvent(getProductJsonForEventSend(), getTotalAmount());
 
-        const submitBtn =
-            document.getElementById("submitBtn");
-
+        const submitBtn = document.getElementById("submitBtn");
         submitBtn.disabled = true;
         submitBtn.innerHTML = "প্রসেসিং...";
 
         const customerData = {
-
             name: document.getElementById("name").value.trim(),
             phone: document.getElementById("phone").value.trim(),
             district: document.getElementById("deliverydistrict").value.trim(),
@@ -449,9 +426,7 @@ document.getElementById("orderForm")
         }
 
         if (!isValidBDPhoneNew(customerData.phone)) {
-
             alert("সঠিক মোবাইল নাম্বার লিখুন");
-
             submitBtn.disabled = false;
             submitBtn.innerHTML = "🛒 অর্ডার কনফার্ম করুন";
             return;
@@ -459,20 +434,12 @@ document.getElementById("orderForm")
         }
 
         const qty = Number(quantity.value);
-
-        const deliveryCharge =
-            getProductDeliveryCharge(PRODUCT_DATA, districtSelect.value);
-
-        const productTotal =
-            qty * PRODUCT_DATA.discount_price;
-
-        const summaryTotal =
-            productTotal + deliveryCharge;
+        const deliveryCharge = getProductDeliveryCharge(PRODUCT_DATA, districtSelect.value);
+        const productTotal = qty * PRODUCT_DATA.discount_price;
+        const summaryTotal = productTotal + deliveryCharge;
 
         const formData = {
-
             customer: customerData,
-
             products: [{
                 product_type: "MAIN",
                 id: PRODUCT_DATA.id,
@@ -481,20 +448,16 @@ document.getElementById("orderForm")
                 quantity: qty,
                 total_amount: productTotal
             }],
-
             amount: {
                 productTotal,
                 deliveryCharge,
                 totalAmount: summaryTotal,
             },
-
             note: document.getElementById("note")?.value.trim() || "",
             otp_required: false,
-
         };
 
         try {
-
             const response = await fetch(
                 `${ENV.API_BASE_URL}/site/api/create-order/`,
                 {
@@ -506,17 +469,14 @@ document.getElementById("orderForm")
                     body: JSON.stringify(formData)
                 }
             );
-
             const data = await response.json();
-
             if (data.success) {
-
+                FacebookPurchaseEvent(getProductJsonForEventSend(), getTotalAmount());
                 // =========================
                 // FIXED SUCCESS MODAL
                 // =========================
 
                 const overlay = document.createElement("div");
-
                 overlay.style.position = "fixed";
                 overlay.style.inset = "0";
                 overlay.style.background = "rgba(0,0,0,0.6)";
@@ -526,7 +486,6 @@ document.getElementById("orderForm")
                 overlay.style.zIndex = "9999";
 
                 const card = document.createElement("div");
-
                 card.style.textAlign = "center";
                 card.style.padding = "35px 25px";
                 card.style.background = "rgba(255,255,255,0.95)";
@@ -535,25 +494,24 @@ document.getElementById("orderForm")
                 card.style.maxWidth = "420px";
                 card.style.width = "90%";
                 card.style.backdropFilter = "blur(8px)";
-
                 card.innerHTML = `
-                <div style="font-size:50px;">🎉</div>
+                    <div style="font-size:50px;">🎉</div>
 
-                <h2>অর্ডার সফল হয়েছে!</h2>
+                    <h2>অর্ডার সফল হয়েছে!</h2>
 
-                <p>আমরা আপনার অর্ডার গ্রহণ করেছি।</p>
+                    <p>আমরা আপনার অর্ডার গ্রহণ করেছি।</p>
 
-                <div style="background:#eaffea;padding:10px;border-radius:10px;margin:10px 0;color:#1b7f2a;">
-                    ✔ কনফার্ম হয়েছে
-                </div>
+                    <div style="background:#eaffea;padding:10px;border-radius:10px;margin:10px 0;color:#1b7f2a;">
+                        ✔ কনফার্ম হয়েছে
+                    </div>
 
-                <p>Redirect <b><span id="countdown">5</span></b> sec</p>
+                    <p>Redirect <b><span id="countdown">5</span></b> sec</p>
 
-                <a href="https://wa.me/${ENV.WHATSAPP_NUMBER}"
-                style="display:inline-block;margin-top:10px;padding:10px 15px;background:#25D366;color:#fff;border-radius:10px;text-decoration:none;">
-                WhatsApp
-                </a>
-            `;
+                    <a href="https://wa.me/${ENV.WHATSAPP_NUMBER}"
+                    style="display:inline-block;margin-top:10px;padding:10px 15px;background:#25D366;color:#fff;border-radius:10px;text-decoration:none;">
+                    WhatsApp
+                    </a>
+                `;
 
                 overlay.appendChild(card);
                 document.body.appendChild(overlay);
@@ -561,36 +519,24 @@ document.getElementById("orderForm")
                 // countdown
                 let count = 5;
 
-                const el =
-                    card.querySelector("#countdown");
+                const el = card.querySelector("#countdown");
 
                 const interval = setInterval(() => {
-
                     count--;
                     el.textContent = count;
-
                     if (count <= 0) {
-
                         clearInterval(interval);
                         window.location.href = "/";
-
                     }
-
                 }, 1000);
-
             } else {
-
                 alert("অর্ডার করতে সমস্যা হয়েছে");
-
             }
-
         } catch (err) {
-
             alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে");
-
         }
 
         submitBtn.disabled = false;
         submitBtn.innerHTML = "🛒 অর্ডার কনফার্ম করুন";
-
     });
+
