@@ -1,6 +1,21 @@
 let PRODUCT_DATA = null;
 
 // =========================
+// Frontend Images
+// =========================
+
+const HERO_IMAGE = "images/hero.jfif";
+
+const GALLERY_IMAGES = [
+    "images/1.jfif",
+    "images/2.jfif",
+    "images/3.jfif",
+    "images/4.jfif",
+    "images/5.jfif",
+    "images/6.jfif"
+];
+
+// =========================
 // Utility Functions
 // =========================
 
@@ -38,48 +53,89 @@ function isValidBDPhoneNew(phone) {
             `${ENV.API_BASE_URL}/site/api/landing-page/${ENV.PRODUCT_LANDING_PAGE_ID}/`
         );
         const response_data = await response.json();
+
         if (response_data.status) {
+
             PRODUCT_DATA = response_data.data.product[0];
+
             setupProductData();
             setupGallery();
             updateSummary();
+
         } else {
+
             console.log("Product fetch error");
+
         }
+
     } catch (e) {
+
         console.log("Fetch Error:", e);
+
     }
 })();
 
 function setupProductData() {
-    document.getElementById("productTitle").textContent = PRODUCT_DATA.name;
-    if (PRODUCT_DATA.short_description) {
-        document.getElementById("productDescription").innerHTML = PRODUCT_DATA.short_description;
-    }
-    document.getElementById("heroImage").src = PRODUCT_DATA.images[0].image;
-    document.querySelectorAll(".product-old-price").forEach(el => {
-        el.textContent = `${toBanglaNumber(Math.floor(PRODUCT_DATA.price))} ৳`;
 
-    });
-    document.querySelectorAll(".product-new-price").forEach(el => {
-        el.textContent = `${toBanglaNumber(Math.floor(PRODUCT_DATA.discount_price))} ৳`;
-    });
+    document.getElementById("productTitle").textContent =
+        PRODUCT_DATA.name;
+
+    if (PRODUCT_DATA.short_description) {
+
+        document.getElementById("productDescription").innerHTML =
+            PRODUCT_DATA.short_description;
+
+    }
+
+    // Frontend Hero Image
+    document.getElementById("heroImage").src =
+        HERO_IMAGE;
+
+    document.querySelectorAll(".product-old-price")
+        .forEach(el => {
+
+            el.textContent =
+                `${toBanglaNumber(Math.floor(PRODUCT_DATA.price))} ৳`;
+
+        });
+
+    document.querySelectorAll(".product-new-price")
+        .forEach(el => {
+
+            el.textContent =
+                `${toBanglaNumber(Math.floor(PRODUCT_DATA.discount_price))} ৳`;
+
+        });
 
 }
 
 // =========================
 // Gallery
 // =========================
+
 function setupGallery() {
-    const gallery = document.getElementById("galleryGrid");
+
+    const gallery =
+        document.getElementById("galleryGrid");
+
     gallery.innerHTML = "";
-    PRODUCT_DATA.images.forEach(image => {
-        const img = document.createElement("img");
-        img.src = image.image;
+
+    GALLERY_IMAGES.forEach(image => {
+
+        const img =
+            document.createElement("img");
+
+        img.src = image;
+
         img.addEventListener("click", () => {
-            document.getElementById("heroImage").src = image.image;
+
+            document.getElementById("heroImage").src =
+                image;
+
         });
+
         gallery.appendChild(img);
+
     });
 
 }
@@ -245,6 +301,43 @@ faqQuestions.forEach(item => {
 
 });
 
+// REPLACE ONLY THIS PART
+
+const faqToggleBtn = document.getElementById("faqToggleBtn");
+const faqText = document.getElementById("faqText");
+const faqIcon = document.getElementById("faqIcon");
+const moreFaqs = document.getElementById("moreFaqs");
+
+let expanded = false;
+
+faqToggleBtn.addEventListener("click", () => {
+
+  expanded = !expanded;
+
+  if (expanded) {
+    moreFaqs.style.display = "block";
+
+    faqText.textContent = "Hide Questions";
+
+    faqIcon.innerHTML = `
+      <path d="M17.94 17.94C16.16 19.23 14.11 20 12 20 5 20 1 12 1 12a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-4.17 5.13M1 1l22 22"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    `;
+
+  } else {
+    moreFaqs.style.display = "none";
+
+    faqText.textContent = "View All Questions";
+
+    faqIcon.innerHTML = `
+      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="12" cy="12" r="3"
+        stroke="currentColor" stroke-width="2"/>
+    `;
+  }
+
+});
 // =========================
 // Countdown
 // =========================
@@ -278,15 +371,23 @@ setInterval(() => {
 
 document.addEventListener('mouseleave', () => {
 
-    document.getElementById('popup')
-        .style.display = 'flex';
+    const popup =
+        document.getElementById('popup');
+
+    if (popup) {
+        popup.style.display = 'flex';
+    }
 
 });
 
 function closePopup() {
 
-    document.getElementById('popup')
-        .style.display = 'none';
+    const popup =
+        document.getElementById('popup');
+
+    if (popup) {
+        popup.style.display = 'none';
+    }
 
 }
 
@@ -415,6 +516,7 @@ document.getElementById("orderForm")
                 // =========================
 
                 const overlay = document.createElement("div");
+
                 overlay.style.position = "fixed";
                 overlay.style.inset = "0";
                 overlay.style.background = "rgba(0,0,0,0.6)";
@@ -424,6 +526,7 @@ document.getElementById("orderForm")
                 overlay.style.zIndex = "9999";
 
                 const card = document.createElement("div");
+
                 card.style.textAlign = "center";
                 card.style.padding = "35px 25px";
                 card.style.background = "rgba(255,255,255,0.95)";
@@ -457,24 +560,34 @@ document.getElementById("orderForm")
 
                 // countdown
                 let count = 5;
-                const el = card.querySelector("#countdown");
+
+                const el =
+                    card.querySelector("#countdown");
 
                 const interval = setInterval(() => {
+
                     count--;
                     el.textContent = count;
 
                     if (count <= 0) {
+
                         clearInterval(interval);
                         window.location.href = "/";
+
                     }
+
                 }, 1000);
 
             } else {
+
                 alert("অর্ডার করতে সমস্যা হয়েছে");
+
             }
 
         } catch (err) {
+
             alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে");
+
         }
 
         submitBtn.disabled = false;

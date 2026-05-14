@@ -582,6 +582,11 @@
     .sticky-buy h3{
       font-size:16px;
     }
+
+    .sticky-buy button{
+      font-size:18px;
+      padding:16px 28px;
+    }
   }
 
   .success-popup{
@@ -611,5 +616,283 @@
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(6px);
     -webkit-backdrop-filter: blur(6px);
+
+}
+
+.faq-toggle-wrap{
+  display:flex;
+  justify-content:center;
+  margin-top:20px;
+}
+
+.faq-toggle-btn{
+  width:100%;
+  max-width:720px;
+  height:56px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+
+  border-radius:999px;
+
+  border:1px solid rgba(255,255,255,0.15);
+
+  background:rgba(255,255,255,0.06);
+
+  backdrop-filter:blur(18px);
+  -webkit-backdrop-filter:blur(18px);
+
+  color:#2B1D16;
+
+  font-size:15px;
+  font-weight:700;
+
+  cursor:pointer;
+
+  transition:all .25s ease;
+
+  box-shadow:
+    0 6px 22px rgba(0,0,0,0.06),
+    inset 0 1px 1px rgba(255,255,255,0.08);
+}
+
+/* hover highlight */
+.faq-toggle-btn:hover{
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.28);
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.10),
+    inset 0 1px 2px rgba(255,255,255,0.18);
+}
+
+/* active click feel */
+.faq-toggle-btn:active{
+  transform:scale(0.98);
+}
+
+/* icon style */
+.faq-toggle-btn svg{
+  transition:transform .3s ease;
+}
+
+.faq-toggle-btn:hover svg{
+  transform:scale(1.1) rotate(-6deg);
+}
+
+.faq-answer.hidden-extra{
+  display:none;
+}
+
+.faq-item.hidden-extra {
+  display: none;
+}
+
+/* mobile full width */
+@media(max-width:768px){
+  .faq-toggle-btn{
+    width:100%;
+    max-width:100%;
+    height:52px;
+    font-size:15px;
+  }
+}
+
+@media (max-width: 768px) {
+
+  /* =========================
+     HEADINGS FIX
+  ========================= */
+  .section-title h2 {
+    font-size: 26px;
+    margin-bottom: 10px;
+    line-height: 1.3;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+    line-height: 1.25;
+    margin-bottom: 15px;
+  }
+
+  .hero p {
+    font-size: 15px;
+    margin-bottom: 18px;
+  }
+
+  /* =========================
+     HERO BUTTONS INLINE FIX
+  ========================= */
+  .cta-group {
+    flex-direction: row;
+    gap: 10px;
+  }
+
+  .cta-group .btn {
+    flex: 1;
+    padding: 12px 10px;
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  /* =========================
+     HERO IMAGE + TEXT SPACING
+  ========================= */
+  .hero {
+    padding: 30px 0;
+    gap: 20px;
+  }
+
+  /* =========================
+     ORDER FORM SPACING FIX
+  ========================= */
+  .order-form {
+    padding: 20px;
+  }
+
+  .input-group {
+    margin-bottom: 12px;
+  }
+
+  input, textarea, select {
+    padding: 12px;
+    font-size: 14px;
+  }
+
+  /* extra white space reduce (order form edge feel fix) */
+  .product-summary {
+    padding: 15px;
+    margin: 15px 0;
+  }
+
+  /* =========================
+     PRICING BOX MOBILE
+  ========================= */
+  .pricing-box {
+    padding: 25px;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  /* =========================
+     ORDER FORM COMPACT FIX
+  ========================= */
+
+  .order-form {
+    padding: 16px;
+  }
+
+  .input-group {
+    margin-bottom: 10px;
+  }
+
+  input, textarea, select {
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 14px;
+  }
+
+  textarea {
+    min-height: 80px;
+  }
+
+  /* summary tighter spacing */
+  .product-summary {
+    padding: 12px;
+    margin: 12px 0;
+  }
+
+  .summary-body {
+    gap: 8px;
+  }
+
+  .summary-row {
+    font-size: 14px;
+  }
+
+  .summary-row.total {
+    font-size: 16px;
+  }
+
+  /* =========================
+     PRICE GAP FIX (OLD + NEW)
+  ========================= */
+
+  .price-box {
+    margin-bottom: 12px; /* was too big */
+  }
+
+  .old-price {
+    font-size: 18px;
+    margin-bottom: 4px; /* reduce gap between old & new */
+    display: block;
+  }
+
+  .new-price {
+    font-size: 34px;
+    line-height: 1.1;
+    margin-top: 0;
+  }
+
+}
+
+@media (max-width: 768px) {
+
+  /* =========================
+     SECTION GAP REDUCTION
+  ========================= */
+
+  section {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+
+  /* hero একটু tight */
+  .hero {
+    padding-top: 25px !important;
+    padding-bottom: 25px !important;
+  }
+
+  /* =========================
+     SECTION TITLE GAP FIX
+  ========================= */
+
+  .section-title {
+    margin-bottom: 20px; /* was 50px */
+  }
+
+  .section-title h2 {
+    margin-bottom: 8px;
+  }
+
+  /* =========================
+     ORDER HEADING → FORM GAP FIX
+  ========================= */
+
+  .order .section-title {
+    margin-bottom: 10px; /* main fix */
+  }
+
+  .order-form {
+    margin-top: 0 !important;
+  }
+
+  /* =========================
+     EXTRA BIG GAP FIX (PRICING + FAQ etc)
+  ========================= */
+
+  .pricing,
+  .faq,
+  .features,
+  .reviews,
+  .gallery,
+  .video-section,
+  .before-after {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
 
 }
