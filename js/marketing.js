@@ -1,44 +1,81 @@
 // ==================================================================================================
 // *********//////////====Facebook Pixel and Event Tracking Function=====/////////////***************
+window.dataLayer = window.dataLayer || [];
 
-function FacebookViewContentEvent(productName, productPrice, productIds) {
-    if (typeof fbq !== 'function') return;
-    fbq('track', 'ViewContent', {
-        content_ids: [String(productIds)],
-        content_name: productName,
-        content_type: 'product',
-        value: parseFloat(productPrice || 0),
-        currency: 'BDT'
+// View Item
+function GAViewItemEvent(product) {
+    if (!product) return;
+    dataLayer.push({
+        event: "view_item",
+        ecommerce: {
+            currency: "BDT",
+            value: Number(product.discount_price),
+            items: [
+                {
+                    item_id: String(product.id),
+                    item_name: product.name,
+                    price: Number(product.discount_price),
+                    quantity: 1
+                }
+            ]
+        }
     });
 }
-function FacebookAddToCartEvent(content_ids, content_name, value) {
-    if (typeof fbq !== 'function') return;
-    fbq('track', 'AddToCart', {
-        content_ids: [String(content_ids)],
-        content_name: content_name,
-        content_type: 'product',
-        value: value,
-        currency: 'BDT'
+
+// Add To Cart
+function GAAddToCartEvent(product) {
+    if (!product) return;
+    dataLayer.push({
+        event: "add_to_cart",
+        ecommerce: {
+            currency: "BDT",
+            value: Number(product.discount_price),
+            items: [
+                {
+                    item_id: String(product.id),
+                    item_name: product.name,
+                    price: Number(product.discount_price),
+                    quantity: 1
+                }
+            ]
+        }
     });
 }
-function FacebookInitiateCheckEvent(contents, value) {
-    if (typeof fbq !== 'function') return;
-    fbq('track', 'InitiateCheckout', {
-        contents: contents,
-        content_type: 'product',
-        value: Number(value),
-        currency: 'BDT'
+
+// Begin Checkout
+function GAInitiateCheckoutEvent(products, total) {
+    if (!products || !products.length) return;
+    dataLayer.push({
+        event: "begin_checkout",
+        ecommerce: {
+            currency: "BDT",
+            value: Number(total),
+            items: products.map(product => ({
+                item_id: String(product.id),
+                item_name: product.name,
+                price: Number(product.price),
+                quantity: Number(product.quantity)
+            }))
+        }
     });
 }
-function FacebookPurchaseEvent(contents, value) {
-    if (typeof fbq !== 'function') return;
-    fbq('track', 'Purchase', {
-        value: Number(value),
-        currency: 'BDT',
-        contents: contents,
-        content_type: 'product',
-        compared_product: 'recommended-banner-toys',
-        delivery_category: 'home_delivery'
+
+// Purchase
+function GAInitiatePurchaseEvent(products, total) {
+    if (!products || !products.length) return;
+    dataLayer.push({
+        event: "purchase",
+        ecommerce: {
+            transaction_id: Date.now().toString(),
+            currency: "BDT",
+            value: Number(total),
+            items: products.map(product => ({
+                item_id: String(product.id),
+                item_name: product.name,
+                price: Number(product.price),
+                quantity: Number(product.quantity)
+            }))
+        }
     });
 }
 

@@ -7,7 +7,7 @@ document.querySelectorAll(".orderNowBtn")
         btn.addEventListener("click", () => {
             orderModal.classList.add("active");
             document.body.style.overflow = "hidden";
-            FacebookAddToCartEvent(PRODUCT_DATA.id, PRODUCT_DATA.name, PRODUCT_DATA.discount_price);
+            GAAddToCartEvent(PRODUCT_DATA);
         });
     });
 

@@ -3,14 +3,14 @@ let PRODUCT_DATA = null;
 // =========================
 // Frontend Images
 // =========================
-const HERO_IMAGE = "images/Top.webp";
+const HERO_IMAGE = "images/top-new.webp?v=1";
 const GALLERY_IMAGES = [
-    "images/Gallery.webp",
-    "images/Gallery2.webp",
-    "images/Gallery3.webp",
-    "images/Gallery4.webp",
-    "images/Gallery5.webp",
-    "images/Gallery6.webp"
+    "images/gallery-1.webp",
+    "images/gallery-2.webp",
+    "images/gallery-3.webp",
+    "images/gallery-4.webp",
+    "images/gallery-5.webp",
+    "images/gallery-6.webp"
 ];
 
 // =========================
@@ -89,7 +89,7 @@ function showProductError() {
 })();
 
 function setupProductData() {
-    FacebookViewContentEvent(PRODUCT_DATA.name, PRODUCT_DATA.discount_price, PRODUCT_DATA.id);
+    GAViewItemEvent(PRODUCT_DATA);
 
     document.getElementById("productTitle").textContent = PRODUCT_DATA.productTitle;
 
@@ -400,7 +400,7 @@ function getProductJsonForEventSend(){
 document.getElementById("orderForm")
     .addEventListener("submit", async function (e) {
         e.preventDefault();
-        FacebookInitiateCheckEvent(getProductJsonForEventSend(), getTotalAmount());
+        GAInitiateCheckoutEvent(getProductJsonForEventSend(), getTotalAmount());
 
         const submitBtn = document.getElementById("submitBtn");
         submitBtn.disabled = true;
@@ -476,7 +476,7 @@ document.getElementById("orderForm")
             const data = await response.json();
             if (data.success) {
                 closeModal();
-                FacebookPurchaseEvent(getProductJsonForEventSend(), getTotalAmount());
+                GAInitiatePurchaseEvent(getProductJsonForEventSend(), getTotalAmount());
 
                 // =========================
                 // FIXED SUCCESS MODAL
