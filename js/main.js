@@ -3,7 +3,7 @@ let PRODUCT_DATA = null;
 // =========================
 // Frontend Images
 // =========================
-const HERO_IMAGE = "images/top-new.webp?v=1";
+const HERO_IMAGE = "images/smart-masala-dani-hero.webp?v=4";
 const GALLERY_IMAGES = [
     "images/gallery-1.webp",
     "images/gallery-2.webp",
