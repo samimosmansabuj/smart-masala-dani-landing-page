@@ -400,9 +400,10 @@ function getProductJsonForEventSend(){
 document.getElementById("orderForm")
     .addEventListener("submit", async function (e) {
         e.preventDefault();
-        GAInitiateCheckoutEvent(getProductJsonForEventSend(), getTotalAmount());
 
         const submitBtn = document.getElementById("submitBtn");
+        if (submitBtn.disabled) return;   
+
         submitBtn.disabled = true;
         submitBtn.innerHTML = "প্রসেসিং...";
 
@@ -459,6 +460,7 @@ document.getElementById("orderForm")
             },
             note: document.getElementById("note")?.value.trim() || "",
             otp_required: false,
+            ...window.getAttributionData(),
         };
 
         try {
