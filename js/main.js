@@ -1,4 +1,5 @@
 let PRODUCT_DATA = null;
+window.__CURRENT_LANDING_CODE__ = ENV.PRODUCT_LANDING_PAGE_ID;
 
 // =========================
 // Frontend Images
