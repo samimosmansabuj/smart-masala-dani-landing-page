@@ -537,8 +537,23 @@ document.getElementById("orderForm")
                         window.location.href = "/";
                     }
                 }, 1000);
+            } else if (data.otp_required) {
+                showOtpVerifyModal({
+                    phone: data.phone || formData.customer.phone,
+                    message: data.message,
+                    apiBase: ENV.API_BASE_URL,
+                    orderEndpoint: "/site/api/create-order/",
+                    orderPayload: formData,
+                    onSuccess: function () {
+                        GAInitiatePurchaseEvent(getProductJsonForEventSend(), getTotalAmount());
+                        closeModal();
+                        window.location.reload();
+                    }
+                });
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = "🛒 অর্ডার কনফার্ম করুন";
             } else {
-                alert("অর্ডার করতে সমস্যা হয়েছে");
+                alert(data.message || "অর্ডার করতে সমস্যা হয়েছে");
             }
         } catch (err) {
             alert("অর্ডার সাবমিট করতে সমস্যা হয়েছে");
